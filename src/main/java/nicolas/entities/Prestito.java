@@ -1,6 +1,6 @@
 package nicolas.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +12,7 @@ public class Prestito {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private nicolas.enteties.Utente utente;
+    private Utente utente;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -36,11 +36,11 @@ public class Prestito {
         this.id = id;
     }
 
-    public nicolas.enteties.Utente getUtente() {
+    public Utente getUtente() {
         return utente;
     }
 
-    public void setUtente(nicolas.enteties.Utente utente) {
+    public void setUtente(Utente utente) {
         this.utente = utente;
     }
 

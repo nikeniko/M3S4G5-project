@@ -3,8 +3,10 @@ package nicolas.dao;
 import nicolas.entities.Prestito;
 import nicolas.entities.Utente;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.List;
 
 public class PrestitoDAO {
@@ -44,8 +46,15 @@ public class PrestitoDAO {
     }
 
     public List<Prestito> findByUtente(Utente utente) {
-        return em.createQuery("SELECT p FROM Prestito p WHERE p.utente = :utente", Prestito.class)
-                .setParameter("utente", utente)
-                .getResultList();
+        TypedQuery<Prestito> query = em.createQuery("SELECT p FROM Prestito p WHERE p.utente = :utente", Prestito.class);
+        query.setParameter("utente", utente);
+        return query.getResultList();
+    }
+
+    public List<Prestito> findPrestitiScaduti() {
+        LocalDate oggi = LocalDate.now();
+        TypedQuery<Prestito> query = em.createQuery("SELECT p FROM Prestito p WHERE p.dataRestituzioneEffettiva IS NULL AND p.dataRestituzionePrevista < :oggi", Prestito.class);
+        query.setParameter("oggi", oggi);
+        return query.getResultList();
     }
 }

@@ -2,8 +2,8 @@ package nicolas.dao;
 
 import nicolas.entities.Elemento;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import java.util.List;
 
 public class ElementoDAO {
@@ -47,4 +47,33 @@ public class ElementoDAO {
                 .setParameter("titolo", titolo)
                 .getResultList();
     }
+
+
+    public void deleteByISBN(String isbn) {
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Elemento elemento = em.createQuery("SELECT e FROM Elemento e WHERE e.isbn = :isbn", Elemento.class)
+                    .setParameter("isbn", isbn)
+                    .getSingleResult();
+            em.remove(em.contains(elemento) ? elemento : em.merge(elemento));
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) transaction.rollback();
+            throw new RuntimeException("Failed to delete Elemento by ISBN", e);
+        }
+    }
+    public List<Elemento> findByAutore(String autore) {
+        return em.createQuery("SELECT e FROM Elemento e WHERE e.autore = :autore", Elemento.class)
+                .setParameter("autore", autore)
+                .getResultList();
+    }
+
+
+    public List<Elemento> findByAnnoPubblicazione(int anno) {
+        return em.createQuery("SELECT e FROM Elemento e WHERE e.annoPubblicazione = :anno", Elemento.class)
+                .setParameter("anno", anno)
+                .getResultList();
+    }
+
 }
