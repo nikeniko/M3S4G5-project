@@ -24,7 +24,7 @@ public class Utente {
     private String numeroTessera;
 
     @OneToMany(mappedBy = "utente")
-
+    private List<Prestito> prestiti;
 
     public Utente() {}
 
@@ -34,7 +34,7 @@ public class Utente {
         this.cognome = cognome;
         this.dataDiNascita = dataDiNascita;
         this.numeroTessera = numeroTessera;
-
+        this.prestiti = prestiti;
     }
 
 
@@ -79,7 +79,13 @@ public class Utente {
         this.numeroTessera = numeroTessera;
     }
 
+    public List<Prestito> getPrestiti() {
+        return prestiti;
+    }
 
+    public void setPrestiti(List<Prestito> prestiti) {
+        this.prestiti = prestiti;
+    }
 
     @Override
     public String toString() {
